@@ -1,9 +1,14 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-public class MyArrTest {
+import java.util.Arrays;
+import java.util.List;
 
+@RunWith(Parameterized.class)
+public class MyArrTest extends Assert {
 
     private MyArr test;
 
@@ -12,50 +17,50 @@ public class MyArrTest {
         test = new MyArr();
 
     }
-    @Test
-    public void testEquals() {
-        int[] testing = {1,2,3,4,5,6,7,8,9,0};
-        int[] expected = {5,6,7,8,9,0};
-        Assert.assertArrayEquals(expected, test.checkAndGetFour(testing));
+    private final int[] testing;
+    private final int[] expected;
+
+    public MyArrTest(final int[] expected, final int[] testing){
+        this.testing =testing;
+        this.expected = expected;
     }
 
-    @Test
-    public void testException(){
-        int[] testing = {1,2,3,5,6,7,8,0};
-        int[] expected = {0};
+    @Parameterized.Parameters
+    public static List<Object[]> dataTest(){
+        return Arrays.asList(new Object[][]{
+                {new int[]{5}, new int[]{1,2,3,4,5}},
+                {new int[]{5,6}, new int[]{1,2,3,4,5,6}},
+                {new int[]{5,6,7}, new int[]{1,2,3,4,5,6,7}},
+                {new int[]{0}, new int[]{5,213,67,34}},
+                {new int[]{24,11}, new int[]{1213,1543,743,889}},
+                {new int[]{423,61,32,1}, new int[]{4,423,61,32,1}},
+        });
+    }
 
-        Assert.assertArrayEquals( expected, test.checkAndGetFour(testing));
+
+    @Test
+    public void testEquals() {
+         assertArrayEquals(expected, test.checkAndGetFour(testing));
     }
 
     @Test
     public void testNotNull(){
-        int[] testing = {1,2,3,4};
         Assert.assertNotNull(test.checkForOneAndFour(testing));
     }
 
     @Test
-    public void testTheSame(){
-        int[] testing = {10,9,8,7,6,5,4,3,2,1};
-        int[] expected = {3,2,1};
-        Assert.assertSame(expected, test.checkForOneAndFour(testing));
+    public void testNotTheSame(){
+        Assert.assertNotSame(false,test.checkForOneAndFour(testing));
     }
 
     @Test
-    public void test1(){
-        int[] testing = {1,2,3,4,5,6,7,8};
+    public void testTheSame(){
+        Assert.assertSame(true, test.checkForOneAndFour(testing));
+    }
+
+    @Test
+    public void testForTrue(){
         Assert.assertTrue(test.checkForOneAndFour(testing));
     }
 
-    @Test
-    public void test2(){
-        int[] testing = {1,2,3,4,5,6,7,8};
-        Assert.assertEquals(true, test.checkForOneAndFour(testing));
-    }
-
-    @Test
-    public void test3(){
-        int[] testing = {1,2,3,4,5,6,7,8};
-        Assert.assertNotSame(false,test.checkForOneAndFour(testing));
-//        Assert.fail("test");
-    }
 }
